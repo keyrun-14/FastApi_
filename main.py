@@ -41,9 +41,9 @@ def get_by_id( id,db :Session = Depends(fetching_Db)):
         details = db.query(models.CityDetail).where(models.CityDetail.id==id).first()
         return details
 
-######     getting city details by id 
-@app.get("/gettingbysearch/{city}")
-def get_by_search( city,db :Session = Depends(fetching_Db)):
+######     getting all details which are related to given request in search bar which contain a part of city name in table
+@app.get("/gettingbysearcha part of city name in table/{city}")
+def get_by_search_a_part_of_city_name_table( city,db :Session = Depends(fetching_Db)):
         details = db.query(models.CityDetail).filter(models.CityDetail.city.like(city+'%')).all()
         return details
 
