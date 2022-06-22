@@ -1,7 +1,7 @@
 
 ### importing required modules
 
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI,Request
 
 from sqlalchemy.orm import Session
 
@@ -11,6 +11,7 @@ from models import models
 from database.db import SessionLocal, engine
 from coordinate.coordinate import Coordinates
 
+import mpu
 
 app = FastAPI()  ## creating fastapi server
 
@@ -119,5 +120,18 @@ def delete_All_Coordinates(db:Session=Depends(fetching_Db)):
 
     else:   ### if no rows found in table 
         return "table empty "
-
+###  nearest cities of particular city 
+@app.get("/nearestCities/{id}")
+def nearestCoordinates(id,db:Session=Depends(fetching_Db)):
+    current=db.query(models.CityDetail).where(models.CityDetail.id==id).first()
+    currrent_lat=current.latitude
+    current_lon=current.longitude
+    getall=db.query(models.CityDetail).all()
+    nearestcities=[]
+    for each in getall:
+        ######  using mpu which is collection of functions , we are using this to calculate distance between 2 coordinates
+        dist = mpu.haversine_distance((currrent_lat, current_lon), (each.latitude,each.longitude))
+        if dist<50 and each!=current:
+            nearestcities.append(each)
+    return nearestcities
 ##########   THANK YOU  ####################
