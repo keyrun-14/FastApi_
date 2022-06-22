@@ -62,12 +62,12 @@ def createCoordinates(coOrd: schemas.CityDetails, db :Session = Depends(fetching
     newCordinate.city = city
     newCordinate.state = state
     newCordinate.pincode = pincode
-    newCordinate.longitude =  locationData[0]
-    newCordinate.latitude =  locationData[1] 
+    newCordinate.longitude =  locationData[1]
+    newCordinate.latitude =  locationData[0] 
 
     db.add(newCordinate)    ### adding row to table
     db.commit()    ####  confirming our changes to database 
-    return newCordinate
+    return newCordinate,locationData
  
  ####     updating data of particular id
 @app.put("/updatingCity/{id}")
@@ -83,8 +83,8 @@ def updating_city(coOrd: schemas.CityDetails,id,db:Session=Depends(fetching_Db))
     updateCoordinate["city"] = city
     updateCoordinate["state"] = state
     updateCoordinate["pincode"]= pincode
-    updateCoordinate["longitude"] =  locationData[0]
-    updateCoordinate["latitude"] = locationData[1] 
+    updateCoordinate["longitude"] =  locationData[1]
+    updateCoordinate["latitude"] = locationData[0] 
     
 
     updating=db.query(models.CityDetail).where(models.CityDetail.id==id).update(updateCoordinate)
@@ -120,6 +120,8 @@ def delete_All_Coordinates(db:Session=Depends(fetching_Db)):
 
     else:   ### if no rows found in table 
         return "table empty "
+
+        
 ###  nearest cities of particular city 
 @app.get("/nearestCities/{id}")
 def nearestCoordinates(id,db:Session=Depends(fetching_Db)):
@@ -128,10 +130,62 @@ def nearestCoordinates(id,db:Session=Depends(fetching_Db)):
     current_lon=current.longitude
     getall=db.query(models.CityDetail).all()
     nearestcities=[]
+    d=[]
     for each in getall:
         ######  using mpu which is collection of functions , we are using this to calculate distance between 2 coordinates
         dist = mpu.haversine_distance((currrent_lat, current_lon), (each.latitude,each.longitude))
-        if dist<50 and each!=current:
+        d.append([(currrent_lat, current_lon), (each.latitude,each.longitude),dist])
+       
+        if dist<100 and each!=current:
             nearestcities.append(each)
     return nearestcities
+
+
+##### nearest cities to city which is not in database
+@app.get("/nearestCities_of_city_not_in_database")
+def nearestCities(city,state,pincode ,db:Session=Depends(fetching_Db)):
+    
+    address=city,state,int(pincode)
+    locationData = Coordinates(address)
+    currrent_lat=float(locationData[0])
+    current_lon=float(locationData[1])
+    getall=db.query(models.CityDetail).all()
+    nearestcities=[]
+    d=[]
+    for each in getall:
+        ######  using mpu which is collection of functions , we are using this to calculate distance between 2 coordinates
+        dist = mpu.haversine_distance((currrent_lat, current_lon), (each.latitude,each.longitude))
+        d.append([(currrent_lat, current_lon), (each.latitude,each.longitude),dist])
+        if dist<100:
+            nearestcities.append(each)
+    return nearestcities
+
+
+# from math import sin, cos, sqrt, atan2, radians
+
+# # approximate radius of earth in km
+# R = 6373.0
+
+# # lat1 = radians(52.2296756)
+# # lon1 = radians(21.0122287)
+# # lat2 = radians(52.406374)
+# # lon2 = radians(16.9251681)
+# # Point one
+# lat1 = radians(28.6139)
+# lon1 =  radians(77.2090)
+
+# # Point two
+# lat2 = radians(17.6868)
+# lon2 = radians(83.2185)
+
+# dlon = lon2 - lon1
+# dlat = lat2 - lat1
+
+# a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+# c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+# distance = R * c
+
+# print("Result:", distance)
+# print("Should be:", 278.546, "km")
 ##########   THANK YOU  ####################
