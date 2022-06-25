@@ -31,7 +31,7 @@ use  ``` pip install -r requirements.txt ``` to install required packages which 
 use ```python -m uvicorn main:app --reload``` to run the application
 
 
-![](2022-06-25-01-34-29.png)
+![](resources/2022-06-25-01-34-29.png)
 
 ---
 
@@ -41,7 +41,7 @@ you will be redirected to swagger doc
 
 swagger document looks like this.
 
-![](2022-06-25-01-40-42.png)
+![](resources/2022-06-25-01-40-42.png)
 
 
 On selecting, you can use each API by providing required data 

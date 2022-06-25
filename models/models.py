@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Integer, Float, String
 from database.db import Base
 
+
+# creating a table with defined columns
 class CityDetail(Base):
     __tablename__ = "CityDetails"
     id = Column(Integer, primary_key=True, index=True)
