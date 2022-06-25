@@ -1,8 +1,40 @@
-2022-06-26 00:56:27,864 - INFO - Started server process [4408]
-2022-06-26 00:56:27,865 - INFO - Waiting for application startup.
-2022-06-26 00:56:27,866 - INFO - Application startup complete.
-2022-06-26 00:56:40,789 - INFO - POST Request: Coordinates
-2022-06-26 00:56:41,720 - ERROR - Exception in ASGI application
+2022-06-26 01:10:13,280 - INFO - Started server process [13560]
+2022-06-26 01:10:13,281 - INFO - Waiting for application startup.
+2022-06-26 01:10:13,281 - INFO - Application startup complete.
+2022-06-26 01:10:19,705 - INFO - nearestCities request for 1
+2022-06-26 01:10:19,711 - ERROR - DB ERROR: id not found
+2022-06-26 01:11:16,794 - INFO - request for nearestCities to  kakinada, east godavari, 533001
+2022-06-26 01:11:17,779 - INFO - no such nearest cities
+2022-06-26 01:12:36,732 - INFO - Requesting all data
+2022-06-26 01:12:36,734 - INFO - Returning all data
+2022-06-26 01:13:09,832 - INFO - Request: id: 1
+2022-06-26 01:13:09,837 - INFO - request id not available
+2022-06-26 01:13:14,117 - INFO - Request: id: 2
+2022-06-26 01:13:14,120 - INFO - Return: data of id: 2
+2022-06-26 01:13:36,954 - INFO - request for {city} details
+2022-06-26 01:13:36,959 - INFO - no such {city} details
+2022-06-26 01:14:03,768 - INFO - request for {city} details
+2022-06-26 01:14:03,770 - INFO - returning for {city} details
+2022-06-26 01:14:23,279 - INFO - POST Request: Coordinates
+2022-06-26 01:14:23,928 - INFO - POST Request: Success
+2022-06-26 01:15:24,034 - INFO - update request for 1
+2022-06-26 01:15:24,718 - INFO - no city with this id 1
+2022-06-26 01:15:35,851 - INFO - Requesting all data
+2022-06-26 01:15:35,853 - INFO - Returning all data
+2022-06-26 01:15:58,017 - INFO - update request for 3
+2022-06-26 01:15:58,920 - INFO - retuning request for 3
+2022-06-26 01:16:09,602 - INFO - delete request for id no: 1
+2022-06-26 01:16:09,606 - INFO - no city with this id 1
+2022-06-26 01:16:17,339 - INFO - delete request for id no: 2
+2022-06-26 01:16:17,349 - INFO - deleted id no: 2
+2022-06-26 01:16:36,471 - INFO - nearestCities request for 2
+2022-06-26 01:16:36,473 - ERROR - DB ERROR: id not found
+2022-06-26 01:16:41,717 - INFO - nearestCities request for 3
+2022-06-26 01:16:41,721 - INFO -  returning nearestCities for 3
+2022-06-26 01:16:54,580 - INFO - request for nearestCities to  kakinada, east godavari, 533001
+2022-06-26 01:16:55,462 - INFO - returning for nearestCities tokakinadaeast godavari533001
+2022-06-26 01:17:04,382 - INFO - request for nearestCities to  kakinada, eastgodavari, 533001
+2022-06-26 01:17:05,312 - ERROR - Exception in ASGI application
 Traceback (most recent call last):
   File "C:\Users\sastry\AppData\Roaming\Python\Python38\site-packages\uvicorn\protocols\http\h11_impl.py", line 366, in run_asgi
     result = await app(self.scope, self.receive, self.send)
@@ -42,10 +74,12 @@ Traceback (most recent call last):
     return await future
   File "C:\Users\sastry\AppData\Roaming\Python\Python38\site-packages\anyio\_backends\_asyncio.py", line 867, in run
     result = context.run(func, *args)
-  File ".\main.py", line 111, in create_coordinates
-    location_data = Coordinates(address)  # calling coodinates function which will get the coordinates from given api
+  File ".\main.py", line 269, in get_nearest_cities
+    location_data = Coordinates(address)
   File ".\coordinate\coordinate.py", line 9, in Coordinates
     a=[response_location[0]["lat"] , response_location[0]["lon"]]
 IndexError: list index out of range
-2022-06-26 00:57:19,526 - INFO - POST Request: Coordinates
-2022-06-26 00:57:20,491 - INFO - POST Request: Success
+2022-06-26 01:17:23,183 - INFO - delete request for all data
+2022-06-26 01:17:23,191 - INFO - deleted all data
+2022-06-26 01:17:27,789 - INFO - delete request for all data
+2022-06-26 01:17:27,794 - INFO - table empty 

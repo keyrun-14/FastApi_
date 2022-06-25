@@ -83,14 +83,14 @@ def get_by_search_a_part_of_city_name_table(city, db: Session = Depends(fetching
     :param db: [Session]
     :return: [list]
     """
-    logger.info("request for {city} details")
+    logger.info(f"request for {city} details")
     details = db.query(models.CityDetail).filter(models.CityDetail.city.like(city + '%')).all()
     if details:
-        logger.info("returning for {city} details")
+        logger.info(f"returning for {city} details")
         return details
     else:
-        logger.info("no such {city} details")
-        return "no such {city} details"
+        logger.info(f"no such {city} details")
+        return f"no such {city} details"
 
 
 # posting data into database
@@ -228,24 +228,28 @@ def nearest_coordinates(id, db: Session = Depends(fetching_db)):
     """
     logger.info(f"nearestCities request for {id}")
     current = db.query(models.CityDetail).where(models.CityDetail.id == id).first()
-    currrent_lat = current.latitude
-    current_lon = current.longitude
-    getall = db.query(models.CityDetail).all()
-    if getall:
-        nearest_cities = []
-        d = []
-        for each in getall:
-            # using mpu which is collection of functions , we are using this to calculate distance between 2 coordinates
-            dist = mpu.haversine_distance((currrent_lat, current_lon), (each.latitude, each.longitude))
-            d.append([(currrent_lat, current_lon), (each.latitude, each.longitude), dist])
+    if current:
+        currrent_lat = current.latitude
+        current_lon = current.longitude
+        getall = db.query(models.CityDetail).all()
+        if getall:
+            nearest_cities = []
+            d = []
+            for each in getall:
+                # using mpu which is collection of functions , we are using this to calculate distance between 2 coordinates
+                dist = mpu.haversine_distance((currrent_lat, current_lon), (each.latitude, each.longitude))
+                d.append([(currrent_lat, current_lon), (each.latitude, each.longitude), dist])
 
-            if dist < 100 and each != current:
-                nearest_cities.append(each)
-        logger.info(f" returning nearestCities for {id}")
-        return nearest_cities
+                if dist < 100 and each != current:
+                    nearest_cities.append(each)
+            logger.info(f" returning nearestCities for {id}")
+            return nearest_cities
+        else:
+            logger.info("table empty ")
+            return "db empty"
     else:
-        logger.info("table empty ")
-        return "db empty"
+        logger.error(f"DB ERROR: id not found")
+        return (f"DB ERROR: id no: {id} not found")
 
 
 # nearest cities to city which is not in database
